@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NPTEL Education Programme</title>
+  <meta name="description" content="Official single-page website mockup for the NPTEL Education Programme: courses, enrollment, FAQs, and contact." />
+  <style>
+    :root{
+      --bg: #0b0f19;
+      --card: #12172a;
+      --muted: #a8b3cf;
+      --text: #ffffff;
+      --brand: #ffb400; /* warm NPTEL-inspired yellow */
+      --brand-2: #ff7a00;
+      --ok: #20c997;
+      --danger: #ef476f;
+      --shadow: 0 8px 30px rgba(0,0,0,.25);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body{
+      margin:0;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 80% -10%, #1a223d 0%, rgba(26,34,61,0) 60%),
+                  radial-gradient(900px 500px at -10% -20%, #1c1230 0%, rgba(28,18,48,0) 50%),
+                  var(--bg);
+    }
+    a { color: var(--brand); text-decoration: none; }
+    img{ max-width:100%; display:block; }
+
+    /* Layout */
+    .container{ width: min(1120px, 92vw); margin-inline:auto; }
+    .grid{ display:grid; gap:24px; }
+
+    /* Navbar */
+    .nav-wrap{ position:sticky; top:0; z-index:50; backdrop-filter: blur(8px); background: rgba(11,15,25,.72); border-bottom:1px solid rgba(255,255,255,.06); }
+    nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
+    .brand{ display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.3px; }
+    .logo{ width:36px; height:36px; border-radius:10px; background: conic-gradient(from 180deg at 50% 50%, var(--brand), var(--brand-2)); display:grid; place-items:center; box-shadow: var(--shadow); }
+    .logo svg{ width:24px; height:24px; }
+    .nav-links{ display:flex; gap:22px; align-items:center; }
+    .nav-links a{ color:var(--muted); font-weight:600; }
+    .nav-links a:hover{ color:var(--text); }
+    .btn{ display:inline-block; padding:10px 16px; border-radius:12px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#1a1405; font-weight:800; box-shadow: 0 6px 20px rgba(255,180,0,.35); transition: transform .15s ease; }
+    .btn:hover{ transform: translateY(-1px); }
+
+    /* Hero */
+    .hero{ padding: 84px 0 56px; position:relative; overflow:hidden; }
+    .hero h1{ font-size: clamp(32px, 4vw, 54px); line-height:1.07; margin: 0 0 14px; }
+    .hero p{ margin: 0 0 28px; color: var(--muted); font-size: clamp(16px, 2vw, 18px); }
+    .hero-card{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 22px; display:grid; grid-template-columns: 1.25fr .75fr; gap: 22px; box-shadow: var(--shadow); }
+    .hero-card small{ color: var(--muted); }
+    .pill{ display:inline-flex; gap:8px; align-items:center; border:1px solid rgba(255,255,255,.12); color:var(--muted); border-radius:999px; padding:6px 10px; margin-bottom:12px; }
+    .hero-stats{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top:10px; }
+    .stat{ background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:14px; text-align:center; }
+    .stat b{ font-size:22px; display:block; color: var(--brand); }
+
+    /* Sections */
+    section{ padding: 64px 0; }
+    h2{ font-size: clamp(26px, 3vw, 36px); margin:0 0 8px; }
+    .sub{ margin:0 0 22px; color:var(--muted); }
+    .card{ background: var(--card); border:1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+
+    /* Courses */
+    .courses{ grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .chip{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.06); color:var(--muted); font-weight:600; }
+
+    /* Highlights */
+    .features{ grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .feature h3{ margin:10px 0 6px; }
+
+    /* Timeline */
+    .timeline{ position:relative; padding-left:24px; }
+    .timeline::before{ content:""; position:absolute; left:6px; top:0; bottom:0; width:2px; background: linear-gradient(var(--brand), transparent); }
+    .t-item{ position:relative; margin:18px 0; padding-left:12px; }
+    .t-item::before{ content:""; position:absolute; left:-10px; top:8px; width:14px; height:14px; border-radius:50%; background: var(--brand); box-shadow:0 0 0 3px rgba(255,180,0,.25); }
+
+    /* FAQ */
+    details{ background: var(--card); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding: 16px 18px; }
+    details + details{ margin-top:12px; }
+    summary{ font-weight:700; cursor:pointer; }
+    details[open]{ border-color: rgba(255,255,255,.16); }
+
+    /* CTA bar */
+    .cta-fab{ position:fixed; right:22px; bottom:22px; z-index:60; }
+    .cta-fab .btn{ padding:14px 18px; border-radius:999px; box-shadow:0 8px 24px rgba(255,122,0,.45); }
+
+    /* Footer */
+    footer{ padding: 42px 0 70px; color: var(--muted); border-top:1px solid rgba(255,255,255,.08); }
+    .foot-grid{ display:grid; grid-template-columns: 1.6fr .8fr .8fr; gap: 24px; }
+    .copy{ margin-top: 22px; font-size:14px; }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .hero-card{ grid-template-columns: 1fr; }
+      .nav-links{ position: fixed; inset: 60px 14px auto 14px; background: rgba(11,15,25,.95); padding:16px; border:1px solid rgba(255,255,255,.1); border-radius:14px; display:none; flex-direction:column; gap:14px; }
+      .nav-links.open{ display:flex; }
+      .menu-btn{ display:inline-flex; }
+    }
+    .menu-btn{ display:none; background:transparent; border:1px solid rgba(255,255,255,.14); color:var(--text); padding:8px 10px; border-radius:10px; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="nav-wrap">
+    <div class="container">
+      <nav aria-label="Primary">
+        <div class="brand">
+          <span class="logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2v20M2 12h20" stroke="#1a1405" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>NPTEL Education Programme</span>
+        </div>
+        <div class="nav-links" id="navLinks">
+          <a href="#about">About</a>
+          <a href="#courses">Courses</a>
+          <a href="#highlights">Highlights</a>
+          <a href="#enrollment">Enrollment</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a class="btn" href="#enrollment">Enroll Now</a>
+          <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">☰</button>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container grid" style="gap:26px;">
+      <div>
+        <span class="pill">🎓 Government of India | IITs & IISc initiative</span>
+        <h1>Learn from India’s top faculty with industry‑relevant, credit‑eligible courses.</h1>
+        <p>NPTEL offers free online courses across Engineering, Science, Humanities and Management. Earn certificates, build skills, and accelerate your career with proctored exams and university credit transfer.*</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="btn" href="#courses">Browse Courses</a>
+          <a class="btn" style="background:transparent; color:var(--text); border:1px solid rgba(255,255,255,.18); box-shadow:none;" href="#about">How it works</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b>2,000+</b><small>Active Courses</small></div>
+          <div class="stat"><b>1.5 Cr+</b><small>Learners Enrolled</small></div>
+          <div class="stat"><b>30+</b><small>Domains & Disciplines</small></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div>
+          <h3 style="margin:6px 0 6px;">Upcoming Exam Window</h3>
+          <p class="sub" style="margin:0;">October 2025 (tentative). Registration closes 6 weeks prior. Centers across India.</p>
+          <div class="grid" style="grid-template-columns: repeat(2, 1fr); gap:12px; margin-top:12px;">
+            <div class="card">
+              <b>Proctored</b>
+              <p class="sub" style="margin:4px 0 0;">3 hrs | MCQ + descriptive</p>
+            </div>
+            <div class="card">
+              <b>Certificate</b>
+              <p class="sub" style="margin:4px 0 0;">E‑verifiable scorecard</p>
+            </div>
+          </div>
+          <small>*Credit transfer depends on your university’s policy.</small>
+        </div>
+        <div class="card">
+          <form onsubmit="event.preventDefault(); alert('Thanks! We\'ll notify you when enrollment opens.');">
+            <label for="email">Get enrollment alerts</label>
+            <input id="email" type="email" required placeholder="you@example.com" style="width:100%; margin:8px 0 10px; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.25); color:var(--text);" />
+            <button class="btn" type="submit" style="width:100%;">Notify Me</button>
+            <p class="sub" style="font-size:12px; margin:8px 0 0;">We respect your privacy. Unsubscribe anytime.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
+      <h2>About NPTEL</h2>
+      <p class="sub">The National Programme on Technology Enhanced Learning (NPTEL) is a project of the Ministry of Education, Government of India, initiated by seven IITs and IISc to provide quality education at scale through online courses and certification.</p>
+      <div class="grid features">
+        <div class="card feature">
+          <div class="chip">🏛️ IITs & IISc Faculty</div>
+          <h3>World‑class instructors</h3>
+          <p>Learn directly from professors at premier Indian institutes with decades of teaching and research experience.</p>
+        </div>
+        <div class="card feature">
+          <div class="chip">📜 Verified Certification</div>
+          <h3>Stand‑out credentials</h3>
+          <p>Earn e‑verifiable certificates after passing proctored exams—recognized by universities and industry.</p>
+        </div>
+        <div class="card feature">
+          <div class="chip">🤝 Industry Partnerships</div>
+          <h3>Career‑aligned learning</h3>
+          <p>Project‑based learning paths and domain tracks curated with input from industry partners.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses -->
+  <section id="courses">
+    <div class="container">
+      <h2>Top Domains & Sample Courses</h2>
+      <p class="sub">Browse hundreds of courses across domains. Here are a few examples—replace with live listings or integrate with your CMS.</p>
+      <div class="grid courses">
+        <article class="card">
+          <div class="chip">🔧 Mechanical Engineering</div>
+          <h3>Manufacturing Processes I</h3>
+          <p class="sub">Tooling, machining, metrology, and process planning.</p>
+          <a class="btn" href="#enrollment">Enroll</a>
+        </article>
+        <article class="card">
+          <div class="chip">💻 Computer Science</div>
+          <h3>Data Structures & Algorithms</h3>
+          <p class="sub">Foundations for interviews and problem‑solving.</p>
+          <a class="btn" href="#enrollment">Enroll</a>
+        </article>
+        <article class="card">
+          <div class="chip">⚡ Electrical Engineering</div>
+          <h3>Power Electronics</h3>
+          <p class="sub">Devices, converters, control, and applications.</p>
+          <a class="btn" href="#enrollment">Enroll</a>
+        </article>
+        <article class="card">
+          <div class="chip">📈 Management</div>
+          <h3>Marketing Research & Analytics</h3>
+          <p class="sub">Quantitative methods and actionable insights.</p>
+          <a class="btn" href="#enrollment">Enroll</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlights -->
+  <section id="highlights">
+    <div class="container">
+      <h2>Programme Highlights</h2>
+      <p class="sub">Everything you need to succeed—from flexible learning to rigorous assessment.</p>
+      <div class="grid features">
+        <div class="card feature">
+          <h3>Flexible & Online</h3>
+          <p>Self‑paced weekly modules with quizzes, assignments, and doubt‑clearing.</p>
+        </div>
+        <div class="card feature">
+          <h3>Credit Eligible</h3>
+          <p>Transfer credits as per your university’s policy and AICTE guidelines.</p>
+        </div>
+        <div class="card feature">
+          <h3>Domain Certifications</h3>
+          <p>Complete curated course groups to earn domain badges.</p>
+        </div>
+        <div class="card feature">
+          <h3>Local Chapter Network</h3>
+          <p>Join 5,000+ partner colleges for mentorship and exam support.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enrollment -->
+  <section id="enrollment">
+    <div class="container">
+      <h2>Enrollment & Certification</h2>
+      <p class="sub">Follow these steps to register for a course and certificate exam.</p>
+      <div class="grid" style="grid-template-columns: 1.5fr .9fr;">
+        <div class="card">
+          <ol class="timeline">
+            <li class="t-item">
+              <h3>1) Sign Up & Choose Course</h3>
+              <p class="sub">Create your learner account and explore the catalogue by domain or instructor.</p>
+            </li>
+            <li class="t-item">
+              <h3>2) Learn & Submit Assignments</h3>
+              <p class="sub">Watch lectures weekly and complete graded assignments before deadlines.</p>
+            </li>
+            <li class="t-item">
+              <h3>3) Register for Proctored Exam</h3>
+              <p class="sub">Pick a city & slot when exam registration opens (limited seats).</p>
+            </li>
+            <li class="t-item">
+              <h3>4) Get Your Certificate</h3>
+              <p class="sub">Pass the exam + assignment cutoff to receive an e‑verifiable certificate.</p>
+            </li>
+          </ol>
+        </div>
+        <div class="grid" style="gap:12px;">
+          <div class="card">
+            <h3>Key Dates</h3>
+            <p class="sub">Enrollment opens: rolling | Exam: Oct 2025 (tentative)</p>
+            <a class="btn" href="#contact">Ask a question</a>
+          </div>
+          <div class="card">
+            <h3>Eligibility</h3>
+            <p class="sub">Open to all learners. Some advanced courses may recommend prerequisites.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <h2>Frequently Asked Questions</h2>
+      <details>
+        <summary>Are courses free?</summary>
+        <p>Yes, learning content is free. A nominal fee applies for the optional proctored certification exam.</p>
+      </details>
+      <details>
+        <summary>Can I get university credit?</summary>
+        <p>Many universities accept NPTEL credits, but policies vary. Check with your institution.</p>
+      </details>
+      <details>
+        <summary>Do I receive placement support?</summary>
+        <p>Some domain tracks include industry interactions. Check the course page for details.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <h2>Contact</h2>
+      <p class="sub">Have questions? Reach out and our support team will get back to you.</p>
+      <div class="grid" style="grid-template-columns: 1.2fr 1fr;">
+        <form class="card" onsubmit="event.preventDefault(); alert('Thanks for contacting NPTEL! We\'ll get back to you soon.');">
+          <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" required placeholder="Your name" style="width:100%; margin:6px 0 12px; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.25); color:var(--text);" />
+            </div>
+            <div>
+              <label for="cemail">Email</label>
+              <input id="cemail" type="email" required placeholder="you@example.com" style="width:100%; margin:6px 0 12px; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.25); color:var(--text);" />
+            </div>
+          </div>
+          <label for="msg">Message</label>
+          <textarea id="msg" rows="4" required placeholder="How can we help?" style="width:100%; margin:6px 0 12px; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,.18); background:rgba(0,0,0,.25); color:var(--text);"></textarea>
+          <button class="btn" type="submit">Send Message</button>
+        </form>
+        <div class="card">
+          <h3>Support</h3>
+          <p class="sub">Email: support@nptel.example.org<br/>Helpline: +91 80 0000 0000 (Mon–Fri, 10am–6pm IST)</p>
+          <h3 style="margin-top:10px;">Address</h3>
+          <p class="sub">NPTEL Office, IIT Madras, Chennai – 600036</p>
+        </div>
+      </div>
+      <p class="sub" style="margin-top:14px; font-size:12px;">Disclaimer: This is a demo single‑page site layout. Replace placeholder details with official information before publishing.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div>
+          <div class="brand" style="margin-bottom:8px;">
+            <span class="logo" aria-hidden="true"></span>
+            <span>NPTEL Education Programme</span>
+          </div>
+          <p class="sub">An initiative by IITs and IISc to make quality education accessible to everyone.</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul style="list-style:none; padding:0; margin:6px 0 0;">
+            <li><a href="#about">About</a></li>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="#enrollment">Enrollment</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Follow</h4>
+          <ul style="list-style:none; padding:0; margin:6px 0 0;">
+            <li><a href="#">YouTube</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">X (Twitter)</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="copy">© <span id="yr"></span> NPTEL (Demo). All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Floating CTA -->
+  <div class="cta-fab">
+    <a class="btn" href="#enrollment">Enroll for Certificate →</a>
+  </div>
+
+  <script>
+    // mobile menu toggle
+    const btn = document.getElementById('menuBtn');
+    const links = document.getElementById('navLinks');
+    btn?.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    // year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
